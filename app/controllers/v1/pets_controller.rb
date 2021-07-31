@@ -4,11 +4,10 @@ class V1::PetsController < ApplicationController
 
   # GET /v1/pets
   def index
-    collection_all = Pet.all
+    collection = Pet.all
     pet = Pet.find_by(id: params[:cursor])
-    collection = collection_all.where("id > ?", pet.id) if pet.present?
+    collection = collection.where("id > ?", pet.id) if pet.present?
     collection = collection.limit(limit)
-    binding.irb
     response.headers["X-Next"] = v1_pets_url(limit: limit, cursor: collection.last.id)
     render json: collection.to_json(except: [:created_at, :updated_at])
   end
