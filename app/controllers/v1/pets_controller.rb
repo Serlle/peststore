@@ -11,10 +11,6 @@ class V1::PetsController < ApplicationController
     binding.irb
     response.headers["X-Next"] = v1_pets_url(limit: limit, cursor: collection.last.id)
     render json: collection.to_json(except: [:created_at, :updated_at])
-
-    # @pets = Pet.all.limit(params[:limit].present? ? params[:limit].to_i : DEFAULT_PETS_LIMIT)
-    #
-    # render json: @pets.to_json(except: [:created_at, :updated_at])
   end
 
   # GET /v1/pets/1
