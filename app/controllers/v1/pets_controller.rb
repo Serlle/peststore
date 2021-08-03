@@ -1,6 +1,6 @@
 class V1::PetsController < ApplicationController
   before_action :set_pet, only: [:show]
-  DEFAULT_PETS_LIMIT = 10
+  DEFAULT_PETS_LIMIT = 20
 
   # GET /v1/pets
   def index
@@ -8,7 +8,9 @@ class V1::PetsController < ApplicationController
     pet = Pet.find_by(id: params[:cursor])
     collection = collection.where("id > ?", pet.id) if pet.present?
     collection = collection.limit(limit)
-    response.headers["X-Next"] = v1_pets_url(limit: limit, cursor: collection.last.id)
+    # El header es un enlace a la siguiente pagina de respuesta
+    # NOTA: Al principio esta bloqueado, ya que cuando inicio con la base de datos en blanco obtengo un error jajaja
+    # response.headers["X-Next"] = v1_pets_url(limit: limit, cursor: collection.last.id)
     render json: collection.to_json(except: [:created_at, :updated_at])
   end
 
